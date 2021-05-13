@@ -8,6 +8,16 @@ fn main() {
     let simulated_random_number = 7;
 
     generate_workout(simulated_user_specified_value, simulated_random_number);
+
+    let x = vec![1, 2, 3];
+
+    let equal_to_x = move |z| z == x; // use keyword "move" to take the ownership
+
+    // can't use x here, because its ownership is token away and moved into closure
+    // println!("{:?}", x);
+
+    let y = vec![1, 2, 3];
+    assert!(equal_to_x(y));
 }
 
 // fn simulated_expensive_caluculation(intensity: u32) -> u32 {
