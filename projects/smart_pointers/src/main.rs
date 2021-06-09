@@ -18,12 +18,17 @@ fn main() {
 
     assert_eq!(5, x);
     // the next two statements are the sanme
-    assert_eq!(5, *y);
-    assert_eq!(5, *(y.deref()));
+    assert_eq!(5, *y); // 自动解引用
+    assert_eq!(5, *(y.deref())); // 手动解引用
 
     let m = MyBox::new(String::from("Rust"));
     hello(&m); // the same as hello(&(*m)[..]);
     hello(&String::from("wang"));
+
+    let u = User{ name: "Raymond" };
+    let y = MySmartPointer::new(u);
+
+    y.name(); // 自动解引用
 }
 
 enum List {
@@ -49,4 +54,30 @@ impl<T> Deref for MyBox<T> {
 
 fn hello(name: &str) {
     println!("Hello, {}", name);
+}
+
+struct MySmartPointer<T>(T);
+
+impl<T> MySmartPointer<T> {
+    fn new(x: T) -> MySmartPointer<T> {
+        MySmartPointer(x)
+    }
+}
+
+impl<T> Deref for MySmartPointer<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+struct User {
+    name: &'static str
+}
+
+impl User {
+    fn name(&self) {
+        println!("Hello {:?}", self.name);
+    }
 }
